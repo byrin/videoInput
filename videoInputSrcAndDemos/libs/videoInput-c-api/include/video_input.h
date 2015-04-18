@@ -9,7 +9,7 @@
 /**
  * @file video_input.h
  * @author Mihail Ivanchev
- * @brief A C API for the videoInput library by Theodore Watson et. al.
+ * @brief A C API for the videoInput library by Theodore Watson et al.
  *
  * As videoInput itself, it's not bound to a particular license and thus can be
  * used without any restriction.
