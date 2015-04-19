@@ -77,7 +77,7 @@
 
 #endif // _VIDEOINPUT
 
-#define VI_RGB              0x01
+#define VI_BGR              0x01
 #define VI_VERTICAL_FLIP    0x02
 
 #define DS_RESOLUTION 0x01
@@ -198,19 +198,105 @@ DLL int VI_Init();
  */
 DLL void VI_Deinit();
 
+/**
+ * Sets the desired framerate for the specified video device in frames per
+ * second.
+ *
+ * The actual framerate will depend on the device's capabilities. This
+ * function should be called prior to the device initialization, otherwise it
+ * has no effect.
+ */
 DLL void VI_SetFramerate(int id, int framerate);
+
+/**
+ * Controls whether an automatic reinitialization will take place once the
+ * specified video device is believed to have "frozen".
+ *
+ * The device is considered inactive if at least numMissedFrames checks for
+ * VI_HasNewFrame() have been unsuccessful. Once the condition is met,
+ * VI_HasNewFrame() attempts to reinitialize the device and continue normal
+ * operation.
+ */
 DLL void VI_SetReconnectOnFreeze(int id, int reconnect, int numMissedFrames);
+
+/**
+ * Initializes the video device with the specified identifier and prepares it
+ * for capture.
+ *
+ * If settings is NULL, the device will be initialized with a default
+ * configuration. This function returns 0 if successful, otherwise a non-zero
+ * value if an error occurs or the device is already initialized. If you want
+ * to reinitialize a device without losing the current configuration, use
+ * VI_ReinitDevice().
+ */
 DLL int VI_InitDevice(int id, const DEVICE_SETTINGS *settings);
+
+/**
+ * Deinitializes the video device with the specified identifier.
+ */
 DLL void VI_DeinitDevice(int id);
+
+/**
+ * Reinitializes the video device with the specified identifier and prepares it
+ * for capture.
+ *
+ * The semantics are generally the same as for VI_InitDevice() with the
+ * difference that this function does not reset the device configuration to the
+ * default one.
+ */
 DLL int VI_ReinitDevice(int id);
-DLL int VI_IsDeviceInitialized(int id);
+
+/**
+ * Returns 0 if the video device with the specified identifier is currently
+ * initialized for capture, otherwise 1.
+ */
+DLL int VI_IsDeviceInit(int id);
+
+/**
+ * TODO
+ */
 DLL int VI_SetFormat(int id, int format);
+
+/**
+ * TODO
+ */
 DLL void VI_SetMediaSubType(int subType);
+
+/**
+ * TODO
+ */
 DLL int VI_HasNewFrame(int id);
+
+/**
+ * Opens the device configuration dialog usually offered by many video device
+ * drivers.
+ *
+ * This is a very device specific feature so it may have no effect.
+ */
 DLL void VI_ShowSettingsWindow(int id);
+
+/**
+ * Returns the frame width for the video device with the specified identifier or
+ * 0 if the device has not been initialized.
+ */
 DLL int VI_GetFrameWidth(int id);
+
+/**
+ * Returns the frame height for the video device with the specified identifier or
+ * 0 if the device has not been initialized.
+ */
 DLL int VI_GetFrameHeight(int id);
+
+/**
+ * Returns the size (in bytes) of a captured frame's image data for the video
+ * device with the specified identifier or 0 if the device has not been
+ * initialized.
+ */
 DLL int VI_GetBufferSize(int id);
+
+/**
+ * TODO
+ */
 DLL int VI_GetPixels(int id, unsigned char *buffer, int flags);
 
 #ifdef __cplusplus

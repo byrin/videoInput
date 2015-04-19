@@ -175,7 +175,7 @@ int VI_ReinitDevice(int id)
     return !VI->restartDevice(id);
 }
 
-int VI_IsDeviceInitialized(int id)
+int VI_IsDeviceInit(int id)
 {
     return VI->isDeviceSetup(id);
 }
@@ -217,7 +217,7 @@ int VI_GetBufferSize(int id)
 
 int VI_GetPixels(int id, unsigned char *buffer, int flags)
 {
-    bool flipRedAndBlue = !(flags & VI_RGB);
+    bool flipRedAndBlue = !(flags & VI_BGR);
     bool flipImage = flags & VI_VERTICAL_FLIP;
 
     return VI->getPixels(id, buffer, flipRedAndBlue, flipImage);
