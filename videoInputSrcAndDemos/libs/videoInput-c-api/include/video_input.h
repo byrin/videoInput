@@ -199,6 +199,11 @@ DLL int VI_Init();
 DLL void VI_Deinit();
 
 /**
+ * TODO
+ */
+DLL void VI_SetBlocking(int blocking);
+
+/**
  * Sets the desired framerate for the specified video device in frames per
  * second.
  *
