@@ -812,7 +812,7 @@ int videoInput::getDeviceIDFromName(char * name) {
 	int deviceID = -1;
 
 	for (int i = 0; i < VI_MAX_CAMERAS; i++) {
-		if (deviceNames[i] == name) {
+		if (!strcmp(deviceNames[i], name)) {
 			deviceID = i;
 			break;
 		}
