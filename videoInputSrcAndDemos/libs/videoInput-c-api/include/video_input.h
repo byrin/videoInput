@@ -83,12 +83,6 @@
 #define DS_RESOLUTION 0x01
 #define DS_CONNECTION 0x20
 
-#ifdef BUILD_DLL
-#define DLL __declspec(dllexport)
-#else
-#define DLL __declspec(dllimport)
-#endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -108,7 +102,7 @@ typedef struct
  * value of 0 indicates that no information should be printed and any other
  * value enables the verbose output.
  */
-DLL void VI_SetVerbose(int verbose);
+void VI_SetVerbose(int verbose);
 
 /**
  * Controls whether the videoInput's COM usage with take place in a
@@ -118,7 +112,7 @@ DLL void VI_SetVerbose(int verbose);
  * If any other parts of your application use COM, make sure that the settings
  * match.
  */
-DLL void VI_SetMultiThreadedCom(int multiThreaded);
+void VI_SetMultiThreadedCom(int multiThreaded);
 
 /**
  * Enumerates the available video devices and returns their number.
@@ -127,7 +121,7 @@ DLL void VI_SetMultiThreadedCom(int multiThreaded);
  * verbose is unequal 0, the function will output information about the found
  * devices to stdout.
  */
-DLL int VI_EnumDevices(int verbose);
+int VI_EnumDevices(int verbose);
 
 /**
  * Returns the names of the discovered video devices and optionally their count.
@@ -159,7 +153,7 @@ DLL int VI_EnumDevices(int verbose);
  * }
  * @endcode
  */
-DLL char** VI_GetDeviceNames(int *numDevices);
+char** VI_GetDeviceNames(int *numDevices);
 
 /**
  * Returns the name of the video device with the specified identifier.
@@ -170,7 +164,7 @@ DLL char** VI_GetDeviceNames(int *numDevices);
  * cannot allocate memory or the identifier is greater or equal to
  * VI_MAX_CAMERAS. The caller is responsible for freeing the memory.
  */
-DLL char *VI_GetDeviceName(int id);
+char *VI_GetDeviceName(int id);
 
 /**
  * Returns the identifier of the video device with the specified name or -1 if
@@ -179,7 +173,7 @@ DLL char *VI_GetDeviceName(int id);
  * This function does not require the library to be initialized by VI_Init().
  * It's not necessary to call VI_EnumDevices() prior to this function.
  */
-DLL int VI_GetDeviceId(const char *name);
+int VI_GetDeviceId(const char *name);
 
 /**
  * Initializes the videoInput library.
@@ -189,19 +183,24 @@ DLL int VI_GetDeviceId(const char *name);
  * an error. The function returns successfully if the library is already
  * initialized.
  */
-DLL int VI_Init();
+int VI_Init();
 
 /**
  * Deinitializes the videoInput library.
  *
  * The function has no effect if the library is not initialized.
  */
-DLL void VI_Deinit();
+void VI_Deinit();
 
 /**
  * TODO
  */
-DLL void VI_SetBlocking(int blocking);
+int VI_IsInit();
+
+/**
+ * TODO
+ */
+void VI_SetBlocking(int blocking);
 
 /**
  * Sets the desired framerate for the specified video device in frames per
@@ -211,7 +210,7 @@ DLL void VI_SetBlocking(int blocking);
  * function should be called prior to the device initialization, otherwise it
  * has no effect.
  */
-DLL void VI_SetFramerate(int id, int framerate);
+void VI_SetFramerate(int id, int framerate);
 
 /**
  * Controls whether an automatic reinitialization will take place once the
@@ -222,7 +221,7 @@ DLL void VI_SetFramerate(int id, int framerate);
  * VI_HasNewFrame() attempts to reinitialize the device and continue normal
  * operation.
  */
-DLL void VI_SetReconnectOnFreeze(int id, int reconnect, int numMissedFrames);
+void VI_SetReconnectOnFreeze(int id, int reconnect, int numMissedFrames);
 
 /**
  * Initializes the video device with the specified identifier and prepares it
@@ -234,12 +233,12 @@ DLL void VI_SetReconnectOnFreeze(int id, int reconnect, int numMissedFrames);
  * to reinitialize a device without losing the current configuration, use
  * VI_ReinitDevice().
  */
-DLL int VI_InitDevice(int id, const DEVICE_SETTINGS *settings);
+int VI_InitDevice(int id, const DEVICE_SETTINGS *settings);
 
 /**
  * Deinitializes the video device with the specified identifier.
  */
-DLL void VI_DeinitDevice(int id);
+void VI_DeinitDevice(int id);
 
 /**
  * Reinitializes the video device with the specified identifier and prepares it
@@ -249,28 +248,28 @@ DLL void VI_DeinitDevice(int id);
  * difference that this function does not reset the device configuration to the
  * default one.
  */
-DLL int VI_ReinitDevice(int id);
+int VI_ReinitDevice(int id);
 
 /**
  * Returns 0 if the video device with the specified identifier is currently
  * initialized for capture, otherwise 1.
  */
-DLL int VI_IsDeviceInit(int id);
+int VI_IsDeviceInit(int id);
 
 /**
  * TODO
  */
-DLL int VI_SetFormat(int id, int format);
+int VI_SetFormat(int id, int format);
 
 /**
  * TODO
  */
-DLL void VI_SetMediaSubType(int subType);
+void VI_SetMediaSubType(int subType);
 
 /**
  * TODO
  */
-DLL int VI_HasNewFrame(int id);
+int VI_HasNewFrame(int id);
 
 /**
  * Opens the device configuration dialog usually offered by many video device
@@ -278,31 +277,31 @@ DLL int VI_HasNewFrame(int id);
  *
  * This is a very device specific feature so it may have no effect.
  */
-DLL void VI_ShowSettingsWindow(int id);
+void VI_ShowSettingsWindow(int id);
 
 /**
  * Returns the frame width for the video device with the specified identifier or
  * 0 if the device has not been initialized.
  */
-DLL int VI_GetFrameWidth(int id);
+int VI_GetFrameWidth(int id);
 
 /**
  * Returns the frame height for the video device with the specified identifier or
  * 0 if the device has not been initialized.
  */
-DLL int VI_GetFrameHeight(int id);
+int VI_GetFrameHeight(int id);
 
 /**
  * Returns the size (in bytes) of a captured frame's image data for the video
  * device with the specified identifier or 0 if the device has not been
  * initialized.
  */
-DLL int VI_GetBufferSize(int id);
+int VI_GetBufferSize(int id);
 
 /**
  * TODO
  */
-DLL int VI_GetPixels(int id, unsigned char *buffer, int flags);
+int VI_GetPixels(int id, unsigned char *buffer, int flags);
 
 #ifdef __cplusplus
 }
