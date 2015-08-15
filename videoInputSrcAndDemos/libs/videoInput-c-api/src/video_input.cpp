@@ -155,21 +155,13 @@ int VI_InitDevice(int id, const DEVICE_SETTINGS *settings)
     }
 
     if (size && conn)
-    {
         ret = VI->setupDevice(id, settings->width, settings->height, settings->connection);
-    }
     else if (size)
-    {
         ret = VI->setupDevice(id, settings->width, settings->height);
-    }
     else if (conn)
-    {
         ret = VI->setupDevice(id, settings->connection);
-    }
     else
-    {
         ret = VI->setupDevice(id);
-    }
 
     return !ret;
 }
