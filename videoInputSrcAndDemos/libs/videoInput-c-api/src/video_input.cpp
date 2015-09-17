@@ -22,39 +22,37 @@ int VI_EnumDevices(int verbose)
 
 char** VI_GetDeviceNames(int *numDevices)
 {
-    std::vector<std::string> names;
+    std::vector<std::string> names = videoInput::getDeviceList();
     char **res, *name, *buf;
-    int cnt, len, i;
-
-    names = videoInput::getDeviceList();
-    cnt = names.size();
+    int cnt = names.size(), len = 0, i;
 
     if (cnt == 0)
     {
-        if (numDevices)
+        if (numDevices != NULL)
+        {
             *numDevices = 0;
-
+        }
         return NULL;
     }
 
     res = (char**) malloc(sizeof(char*) * cnt);
-    if (!res)
+    if (res == NULL)
     {
-        if (numDevices)
+        if (numDevices != NULL)
+        {
             *numDevices = -1;
-
+        }
         return NULL;
     }
 
-    len = 0;
     for (i = 0; i < cnt; i++)
     {
         res[i] = (char*) names[i].c_str();
         len += strlen(res[i]) + 1;
     }
 
-    buf = (char*) malloc(len);
-    if (!buf)
+    buf = (char*) malloc(sizeof(char) * len);
+    if (buf == NULL)
     {
         free(res);
         return NULL;
@@ -68,8 +66,10 @@ char** VI_GetDeviceNames(int *numDevices)
         buf += strlen(name) + 1;
     }
 
-    if (numDevices)
+    if (numDevices != NULL)
+    {
         *numDevices = cnt;
+    }
 
     return res;
 }
@@ -80,14 +80,17 @@ char *VI_GetDeviceName(int id)
     int len;
 
     name = videoInput::getDeviceName(id);
-    if (!name)
+    if (name == NULL)
+    {
         return NULL;
+    }
 
     len = strlen(name) + 1;
-    res = (char*) malloc(len);
+    res = (char*) malloc(sizeof(char) * len);
     if (res == NULL)
+    {
         return NULL;
-
+    }
     strcpy(res, name);
     return res;
 }
@@ -99,13 +102,14 @@ int VI_GetDeviceId(const char *name)
 
 int VI_Init()
 {
-    if (VI_IsInit())
-        return 0;
-
-    VI = new (std::nothrow) videoInput();
-    if (!VI)
+    if (VI != NULL)
     {
-        errno = ENOMEM;
+        return 0;
+    }
+
+    VI = new videoInput();
+    if (VI == NULL)
+    {
         return 1;
     }
 
@@ -114,19 +118,11 @@ int VI_Init()
 
 void VI_Deinit()
 {
-    if (VI_IsInit())
+    if (VI != NULL)
     {
         delete VI;
         VI = NULL;
     }
-}
-
-int VI_IsInit()
-{
-    if (VI)
-        return 1;
-
-    return 0;
 }
 
 void VI_SetBlocking(int blocking)
@@ -148,7 +144,7 @@ int VI_InitDevice(int id, const DEVICE_SETTINGS *settings)
 {
     bool size = false, conn = false, ret;
 
-    if (settings)
+    if (settings != NULL)
     {
         size = settings->flags & DS_RESOLUTION;
         conn = settings->flags & DS_CONNECTION;
