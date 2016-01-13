@@ -119,7 +119,7 @@ Thanks to:
 //videoInput defines
 #define VI_VERSION	 0.200
 #define VI_MAX_CAMERAS  20
-#define VI_NUM_TYPES    19 //DON'T TOUCH
+#define VI_NUM_TYPES    20 //DON'T TOUCH
 #define VI_NUM_FORMATS  18 //DON'T TOUCH
 
 //defines for setPhyCon - tuner is not as well supported as composite and s-video
@@ -169,6 +169,7 @@ Thanks to:
 #define VI_MEDIASUBTYPE_Y8      16
 #define VI_MEDIASUBTYPE_GREY    17
 #define VI_MEDIASUBTYPE_MJPG    18
+#define VI_MEDIASUBTYPE_HDYC    19
 
 //allows us to directShow classes here with the includes in the cpp
 struct ICaptureGraphBuilder2;
@@ -280,7 +281,7 @@ class videoInput{
 
 		//call before setupDevice
 		//directshow will try and get the closest possible framerate to what is requested
-		void setIdealFramerate(int deviceID, int idealFramerate);
+		void setIdealFramerate(int deviceID, double idealFramerate);
 
 		//some devices will stop delivering frames after a while - this method gives you the option to try and reconnect
 		//to a device if videoInput detects that a device has stopped delivering frames.
@@ -394,6 +395,7 @@ class videoInput{
 		GUID MEDIASUBTYPE_Y800;
 		GUID MEDIASUBTYPE_Y8;
 		GUID MEDIASUBTYPE_GREY;
+		GUID MEDIASUBTYPE_HDYC;
 
 		videoDevice * VDList[VI_MAX_CAMERAS];
 		GUID mediaSubtypes[VI_NUM_TYPES];

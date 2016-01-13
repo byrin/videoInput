@@ -536,6 +536,7 @@ videoInput::videoInput(){
 	makeGUID( &MEDIASUBTYPE_Y800, 0x30303859, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71 );
 	makeGUID( &MEDIASUBTYPE_Y8, 0x20203859, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71 );
 	makeGUID( &MEDIASUBTYPE_GREY, 0x59455247, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71 );
+	makeGUID( &MEDIASUBTYPE_HDYC, 0x43594448, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71 );
 
 	//The video types we support
 	//in order of preference
@@ -561,6 +562,7 @@ videoInput::videoInput(){
     mediaSubtypes[16]	= MEDIASUBTYPE_Y8;
 	mediaSubtypes[17]	= MEDIASUBTYPE_GREY;
 	mediaSubtypes[18]	= MEDIASUBTYPE_MJPG; // added by gameover
+	mediaSubtypes[19]   = MEDIASUBTYPE_HDYC; // added by hasegaw
 
 	//The video formats we support
 	formatTypes[VI_NTSC_M]		= AnalogVideo_NTSC_M;
@@ -652,10 +654,10 @@ void videoInput::setUseCallback(bool useCallback){
 //
 // ----------------------------------------------------------------------
 
-void videoInput::setIdealFramerate(int deviceNumber, int idealFramerate){
+void videoInput::setIdealFramerate(int deviceNumber, double idealFramerate){
 	if(deviceNumber >= VI_MAX_CAMERAS || VDList[deviceNumber]->readyToCapture) return;
 
-	if( idealFramerate > 0 ){
+	if( idealFramerate > 0.0 ){
 		VDList[deviceNumber]->requestedFrameTime = (unsigned long)(10000000 / idealFramerate);
 	}
 }
@@ -1663,6 +1665,7 @@ void videoInput::getMediaSubtypeAsString(GUID type, char * typeAsString){
 	else if(type == MEDIASUBTYPE_Y800) strncpy(tmpStr, "Y800", maxStr);
 	else if(type == MEDIASUBTYPE_Y8) strncpy(tmpStr, "Y8", maxStr);
 	else if(type == MEDIASUBTYPE_GREY) strncpy(tmpStr, "GREY", maxStr);
+	else if(type == MEDIASUBTYPE_HDYC) strncpy(tmpStr, "HDYC", maxStr);
 	else strncpy(tmpStr, "OTHER", maxStr);
 
 	memcpy(typeAsString, tmpStr, sizeof(char)*8);

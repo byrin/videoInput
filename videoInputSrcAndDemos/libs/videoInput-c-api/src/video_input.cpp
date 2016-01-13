@@ -130,7 +130,7 @@ void VI_SetBlocking(int blocking)
     VI->setUseCallback(blocking);
 }
 
-void VI_SetFramerate(int id, int framerate)
+void VI_SetFramerate(int id, double framerate)
 {
     VI->setIdealFramerate(id, framerate);
 }

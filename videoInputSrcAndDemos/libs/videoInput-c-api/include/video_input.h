@@ -211,7 +211,7 @@ DLL void VI_SetBlocking(int blocking);
  * function should be called prior to the device initialization, otherwise it
  * has no effect.
  */
-DLL void VI_SetFramerate(int id, int framerate);
+DLL void VI_SetFramerate(int id, double framerate);
 
 /**
  * Controls whether an automatic reinitialization will take place once the
