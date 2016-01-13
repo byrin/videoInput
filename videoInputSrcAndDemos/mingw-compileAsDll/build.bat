@@ -1,4 +1,5 @@
-SET CFLAGS=-DBUILD_DLL -c -O3 -I..\libs\videoInput -I..\libs\videoInput-c-api\include -I..\libs\DShow\Include
+SET CFLAGS=-static-libgcc -static-libstdc++ -fno-permissive -DBUILD_DLL -c -O3 -I..\libs\videoInput -I..\libs\videoInput-c-api\include -I..\libs\DShow\Include
+
 SET LIBS=..\libs\DShow\lib\ddraw.lib ..\libs\DShow\lib\dxguid.lib ..\libs\DShow\lib\ole32.lib ..\libs\DShow\lib\oleaut32.lib ..\libs\DShow\lib\strmbasd.lib ..\libs\DShow\lib\strmbase.lib ..\libs\DShow\lib\strmiids.lib ..\libs\DShow\lib\uuid.lib
 SET OUT_DIR=..\..\compiledLib\mingw
 
@@ -17,9 +18,11 @@ if not exist %OUT_DIR% mkdir %OUT_DIR%
 if %errorlevel% neq 0 goto error
 @echo on
 
-g++ -shared -o %OUT_DIR%\videoinput_dll.dll ..\libs\videoInput-c-api\src\video_input.o ..\libs\videoInput\videoInput.o %LIBS% -Wl,--out-implib,..\..\compiledLib\mingw\libvideoinput_dll.a
+g++ -static-libgcc -static-libstdc++ -shared -o %OUT_DIR%\videoinput_dll.dll ..\libs\videoInput-c-api\src\video_input.o ..\libs\videoInput\videoInput.o %LIBS% -Wl,--out-implib,..\..\compiledLib\mingw\libvideoinput_dll.a
 @echo off
 if %errorlevel% neq 0 goto error
+
+copy ..\..\compiledLib\mingw\videoinput_dll.dll videoinput.dll
 
 echo. 1>&2
 echo ************************************ 1>&2
